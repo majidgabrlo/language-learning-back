@@ -5,34 +5,28 @@ export const typeDefs = gql`
     me: User
   }
   type Mutation {
-    signup(
-      credentials: CredentialsInput!
-      name: String!
-    ): AuthPayload!
+    signup(credentials: CredentialsInput!, name: String!): AuthPayload!
     signin(credentials: CredentialsInput!): AuthPayload!
+    addLanguage(name: String!, languageShortName: String!): String!
   }
   type User {
     id: ID!
     email: String!
     name: String!
     languages: [Language!]
-    words: [Word!]
   }
 
   type Language {
     id: ID!
     name: String!
     shortName: String!
-    users: [User!]!
     words: [Word!]!
   }
 
   type Word {
     id: ID!
-    userId: ID!
-    languageId: ID!
-    user: User
-    language: Language
+    word: String!
+    meaning: String!
   }
 
   type AuthPayload {
@@ -48,5 +42,4 @@ export const typeDefs = gql`
   type UserError {
     message: String!
   }
-
 `;

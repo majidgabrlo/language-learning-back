@@ -2,6 +2,7 @@ import validator from "validator";
 import bcrypt from "bcryptjs";
 import JWT from "jsonwebtoken";
 import User from "../../models/User";
+import { Context } from "../..";
 
 interface SignupArgs {
   credentials: {
@@ -26,7 +27,7 @@ interface UserPayload {
   token: string | null;
 }
 
-const JSON_SIGNATURE = "5f4s6df@@KGsdf$%&^$#fnCV454ddgSSS";
+export const JSON_SIGNATURE = "5f4s6df@@KGsdf$%&^$#fnCV454ddgSSS";
 
 export const Mutation = {
   signup: async (_: any, { credentials, name }: SignupArgs): Promise<any> => {
@@ -120,5 +121,25 @@ export const Mutation = {
         expiresIn: 3600000,
       }),
     };
+  },
+
+  addLanguage: async (
+    _: any,
+    { languageShortName, name }: { languageShortName: string; name: string },
+    { userInfo }: Context
+  ) => {
+    const user = await User.findOne({ id: userInfo?.userId });
+    if (
+      user?.languages.find((lang) => {
+        return lang?.shortName === languageShortName;
+      })?.id
+    ) {
+      return "Language Already Exist";
+    }
+    await User.updateOne(
+      { id: userInfo?.userId },
+      { $push: { languages: { name, shortName: languageShortName } } }
+    );
+    return "Done";
   },
 };
