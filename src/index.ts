@@ -1,18 +1,27 @@
+import { PrismaClient, Prisma } from "@prisma/client";
 import { ApolloServer } from "apollo-server";
-import { resolvers } from "./graphql/resolvers";
+import { Query } from "./graphql/resolvers";
+import { Mutation } from "./graphql/resolvers/Mutation";
 import { typeDefs } from "./graphql/typeDefs";
-import dotenv from "dotenv";
 
-dotenv.config();
+export const prisma = new PrismaClient();
 
-const MONGODB = process.env.DATABASE_URL;
+export interface Context {
+  prisma: PrismaClient<
+    Prisma.PrismaClientOptions,
+    never,
+    Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
+  >;
+  userInfo: {
+    userId: number;
+  } | null;
+}
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
-  context: async ({ req }: any): Promise<ContextType> => {
-    const userData = getUserFromToken(req.headers.authorization);
-    return { userData, prisma };
+  resolvers: {
+    Query,
+    Mutation,
   },
 });
 
