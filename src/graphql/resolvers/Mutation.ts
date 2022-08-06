@@ -1,7 +1,7 @@
-import { Context } from "../../index";
 import validator from "validator";
 import bcrypt from "bcryptjs";
 import JWT from "jsonwebtoken";
+import User from "../../models/User";
 
 interface SignupArgs {
   credentials: {
@@ -29,11 +29,7 @@ interface UserPayload {
 const JSON_SIGNATURE = "5f4s6df@@KGsdf$%&^$#fnCV454ddgSSS";
 
 export const Mutation = {
-  signup: async (
-    _: any,
-    { credentials, name }: SignupArgs,
-    { prisma }: Context
-  ): Promise<UserPayload> => {
+  signup: async (_: any, { credentials, name }: SignupArgs): Promise<any> => {
     const { email, password } = credentials;
 
     const isEmail = validator.isEmail(email);
@@ -77,21 +73,18 @@ export const Mutation = {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await prisma.user.create({
-      data: {
-        email,
-        name,
-        password: hashedPassword,
-      },
+    const createNewUser = new User({
+      name,
+      email: credentials.email,
+      password: hashedPassword,
     });
-
-    console.log(user);
+    const res = await createNewUser.save();
 
     return {
       userErrors: [],
       token: JWT.sign(
         {
-          userId: user.id,
+          userId: res._id,
         },
         JSON_SIGNATURE,
         {
@@ -100,18 +93,10 @@ export const Mutation = {
       ),
     };
   },
-  signin: async (
-    _: any,
-    { credentials }: SigninArgs,
-    { prisma }: Context
-  ): Promise<UserPayload> => {
+  signin: async (_: any, { credentials }: SigninArgs): Promise<UserPayload> => {
     const { email, password } = credentials;
 
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
+    const user = await User.findOne({ email });
 
     if (!user) {
       return {
@@ -120,7 +105,7 @@ export const Mutation = {
       };
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user?.password as string);
 
     if (!isMatch) {
       return {

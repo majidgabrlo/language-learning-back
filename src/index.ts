@@ -1,21 +1,10 @@
-import { PrismaClient, Prisma } from "@prisma/client";
 import { ApolloServer } from "apollo-server";
+import mongoose from "mongoose";
 import { Query } from "./graphql/resolvers";
 import { Mutation } from "./graphql/resolvers/Mutation";
 import { typeDefs } from "./graphql/typeDefs";
 
-export const prisma = new PrismaClient();
-
-export interface Context {
-  prisma: PrismaClient<
-    Prisma.PrismaClientOptions,
-    never,
-    Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
-  >;
-  userInfo: {
-    userId: number;
-  } | null;
-}
+const MONGODB = "mongodb+srv://majidgabrlo:fuchs333@cluster0.rw6ikjf.mongodb.net/?retryWrites=true&w=majority";
 
 const server = new ApolloServer({
   typeDefs,
@@ -25,6 +14,8 @@ const server = new ApolloServer({
   },
 });
 
-server.listen().then(({ url }) => {
-  console.log("listining to " + url);
+mongoose.connect(MONGODB as string).then(() => {
+  server.listen().then(({ url }) => {
+    console.log("listining to " + url);
+  });
 });
