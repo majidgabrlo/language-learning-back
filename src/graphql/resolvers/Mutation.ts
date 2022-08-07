@@ -142,4 +142,22 @@ export const Mutation = {
     );
     return "Done";
   },
+
+  removeLanguage: async (
+    _: any,
+    { languageShortName }: { languageShortName: string },
+    { userInfo }: Context
+  ) => {
+    const user = await User.findOne({ id: userInfo?.userId });
+
+    if (!user?.languages.length) {
+      return "You Don't have any languages";
+    }
+    const filtered = user?.languages.filter(
+      (lang) => lang.shortName !== languageShortName
+    );
+        
+    await User.updateOne({ id: userInfo?.userId }, { languages: filtered });
+    return "Done";
+  },
 };
