@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema } from "mongoose";
 import Word from "./Word";
 
 const languageSchema = new Schema({

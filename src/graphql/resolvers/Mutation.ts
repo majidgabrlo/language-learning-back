@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import JWT from "jsonwebtoken";
 import User from "../../models/User";
 import { Context } from "../..";
-import { StringValueNode } from "graphql";
+import { JSON_SIGNATURE } from "../../key";
 
 interface SignupArgs {
   credentials: {
@@ -27,8 +27,6 @@ interface UserPayload {
   }[];
   token: string | null;
 }
-
-export const JSON_SIGNATURE = "5f4s6df@@KGsdf$%&^$#fnCV454ddgSSS";
 
 export const Mutation = {
   signup: async (_: any, { credentials, name }: SignupArgs): Promise<any> => {
@@ -129,7 +127,10 @@ export const Mutation = {
     { languageShortName, name }: { languageShortName: string; name: string },
     { userInfo }: Context
   ) => {
-    const user = await User.findOne({ id: userInfo?.userId });
+    const user = await User.findById(userInfo?.userId);
+    console.log(user);
+
+    if (!user) return "not authenticated";
     if (
       user?.languages?.find((lang) => {
         return lang?.shortName === languageShortName;
@@ -137,10 +138,9 @@ export const Mutation = {
     ) {
       return "Language Already Exist";
     }
-    await User.updateOne(
-      { id: userInfo?.userId },
-      { $push: { languages: { name, shortName: languageShortName } } }
-    );
+    await User.findByIdAndUpdate(userInfo?.userId, {
+      $push: { languages: { name, shortName: languageShortName } },
+    });
     return "Done";
   },
 
@@ -149,8 +149,8 @@ export const Mutation = {
     { languageShortName }: { languageShortName: string },
     { userInfo }: Context
   ) => {
-    const user = await User.findOne({ id: userInfo?.userId });
-
+    const user = await User.findById(userInfo?.userId);
+    if (!user) return "Not Authenticated";
     if (!user?.languages) {
       return "You Don't have any languages";
     }
@@ -158,7 +158,7 @@ export const Mutation = {
       (lang) => lang.shortName !== languageShortName
     );
 
-    await User.updateOne({ id: userInfo?.userId }, { languages: filtered });
+    await User.findByIdAndUpdate(userInfo?.userId, { languages: filtered });
     return "Done";
   },
   addWord: async (
@@ -170,8 +170,8 @@ export const Mutation = {
     }: { languageShortName: string; word: string; meaning: string },
     { userInfo }: Context
   ) => {
-    const user = await User.findOne({ id: userInfo?.userId });
-
+    const user = await User.findById(userInfo?.userId);
+    if (!user) return "Not Authenticated";
     return user?.languages.map(async (lang) => {
       if (lang.shortName !== languageShortName) return false;
       {
@@ -188,14 +188,15 @@ export const Mutation = {
     { languageShortName, word }: { languageShortName: string; word: string },
     { userInfo }: Context
   ) => {
-    const user = await User.findOne({ id: userInfo?.userId });
-    user?.languages.map((lang:any) => {
+    const user = await User.findById(userInfo?.userId);
+    if (!user) return "Not Authenticated";
+    user?.languages.map((lang: any) => {
       if (lang.shortName === languageShortName) {
-        const words = lang.words.filter((item:any) => item.word !== word);
-        lang.words=words
+        const words = lang.words.filter((item: any) => item.word !== word);
+        lang.words = words;
       }
     });
-    await user?.save()
-    return "Done"
+    await user?.save();
+    return "Done";
   },
 };

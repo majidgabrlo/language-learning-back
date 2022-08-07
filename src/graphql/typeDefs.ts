@@ -3,6 +3,9 @@ import { gql } from "apollo-server";
 export const typeDefs = gql`
   type Query {
     me: User
+    languagesList: [LanguageListItem!]!
+    languageList: [Language!]!
+    wordsList(languageShortName: String!): [Word!]!
   }
   type Mutation {
     signup(credentials: CredentialsInput!, name: String!): AuthPayload!
@@ -17,6 +20,12 @@ export const typeDefs = gql`
     email: String!
     name: String!
     languages: [Language!]
+  }
+
+  type LanguageListItem {
+    name: String!
+    shortName: String!
+    flagUrl: String!
   }
 
   type Language {

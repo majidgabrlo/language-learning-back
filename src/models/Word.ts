@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema } from "mongoose";
 
 const wordSchema = new Schema({
   languageShortName:String,

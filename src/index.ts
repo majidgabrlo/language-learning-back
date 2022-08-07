@@ -1,7 +1,6 @@
 import { ApolloServer } from "apollo-server";
 import mongoose from "mongoose";
-import { Query } from "./graphql/resolvers";
-import { Mutation } from "./graphql/resolvers/Mutation";
+import { Query, Mutation } from "./graphql/resolvers";
 import { typeDefs } from "./graphql/typeDefs";
 import { getUserFromToken } from "./utils/getUserFromToken";
 
@@ -10,7 +9,7 @@ const MONGODB =
 
 export interface Context {
   userInfo: {
-    userId: number;
+    userId: string;
   } | null;
 }
 
