@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import JWT from "jsonwebtoken";
 import User from "../../models/User";
 import { Context } from "../..";
+import { StringValueNode } from "graphql";
 
 interface SignupArgs {
   credentials: {
@@ -130,7 +131,7 @@ export const Mutation = {
   ) => {
     const user = await User.findOne({ id: userInfo?.userId });
     if (
-      user?.languages.find((lang) => {
+      user?.languages?.find((lang) => {
         return lang?.shortName === languageShortName;
       })?.id
     ) {
@@ -150,14 +151,51 @@ export const Mutation = {
   ) => {
     const user = await User.findOne({ id: userInfo?.userId });
 
-    if (!user?.languages.length) {
+    if (!user?.languages) {
       return "You Don't have any languages";
     }
     const filtered = user?.languages.filter(
       (lang) => lang.shortName !== languageShortName
     );
-        
+
     await User.updateOne({ id: userInfo?.userId }, { languages: filtered });
     return "Done";
+  },
+  addWord: async (
+    _: any,
+    {
+      languageShortName,
+      word,
+      meaning,
+    }: { languageShortName: string; word: string; meaning: string },
+    { userInfo }: Context
+  ) => {
+    const user = await User.findOne({ id: userInfo?.userId });
+
+    return user?.languages.map(async (lang) => {
+      if (lang.shortName !== languageShortName) return false;
+      {
+        lang.words.push({ word, meaning, languageShortName });
+        await user.save();
+      }
+      return true;
+    }).length
+      ? "Done"
+      : "Error";
+  },
+  removeWord: async (
+    _: any,
+    { languageShortName, word }: { languageShortName: string; word: string },
+    { userInfo }: Context
+  ) => {
+    const user = await User.findOne({ id: userInfo?.userId });
+    user?.languages.map((lang:any) => {
+      if (lang.shortName === languageShortName) {
+        const words = lang.words.filter((item:any) => item.word !== word);
+        lang.words=words
+      }
+    });
+    await user?.save()
+    return "Done"
   },
 };

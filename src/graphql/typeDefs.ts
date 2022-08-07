@@ -9,6 +9,8 @@ export const typeDefs = gql`
     signin(credentials: CredentialsInput!): AuthPayload!
     addLanguage(name: String!, languageShortName: String!): String!
     removeLanguage(languageShortName: String!): String!
+    addWord(languageShortName: String!, word: String, meaning: String): String!
+    removeWord(languageShortName: String!, word: String): String!
   }
   type User {
     id: ID!
