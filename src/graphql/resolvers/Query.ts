@@ -34,6 +34,12 @@ export const Query = {
         flagUrl:
           "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/1280px-Flag_of_Mexico.svg.png",
       },
+      {
+        name: "Portuguese",
+        shortName: "pt",
+        flagUrl:
+          "https://upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.svg/1200px-Flag_of_Brazil.svg.png",
+      },
     ];
   },
   wordsList: async (

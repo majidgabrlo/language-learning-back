@@ -128,8 +128,6 @@ export const Mutation = {
     { userInfo }: Context
   ) => {
     const user = await User.findById(userInfo?.userId);
-    console.log(user);
-
     if (!user) return "not authenticated";
     if (
       user?.languages?.find((lang) => {
