@@ -5,7 +5,7 @@ import { typeDefs } from "./graphql/typeDefs";
 import { getUserFromToken } from "./utils/getUserFromToken";
 
 const MONGODB =
-  "mongodb+srv://majidgabrlo:fuchs333@cluster0.rw6ikjf.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb+srv://majidgabrlo:fuchs333@cluster0.rw6ikjf.mongodb.net/languages?retryWrites=true&w=majority";
 
 export interface Context {
   userInfo: {

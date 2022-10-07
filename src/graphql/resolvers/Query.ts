@@ -57,4 +57,20 @@ export const Query = {
     const user = await User.findById(userInfo?.userId);
     return user?.languages;
   },
+  savedWordsInText: async (
+    _: any,
+    { languageShortName, text }: { text: string; languageShortName: string },
+    { userInfo }: Context
+  ) => {
+    const user = await User.findById(userInfo?.userId);
+    const words = user?.languages
+      .find((lang) => lang.shortName === languageShortName)
+      ?.words.map((word) => word.word);
+    return text
+      .split(" ")
+      .filter((word) =>
+        words?.includes(word.replaceAll(/[,.:]/g, ""))
+      )
+      .filter((word, i, self) => self.indexOf(word) === i).map(word=>word.replaceAll(/[,.:]/g, ""));
+  },
 };

@@ -6,6 +6,7 @@ export const typeDefs = gql`
     languagesList: [LanguageListItem!]!
     languageList: [Language!]!
     wordsList(languageShortName: String!): [Word!]!
+    savedWordsInText(languageShortName: String!, text: String!): [String!]
   }
   type Mutation {
     signup(credentials: CredentialsInput!, name: String!): AuthPayload!
