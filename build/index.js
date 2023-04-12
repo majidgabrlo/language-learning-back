@@ -44,7 +44,7 @@ var mongoose_1 = __importDefault(require("mongoose"));
 var resolvers_1 = require("./graphql/resolvers");
 var typeDefs_1 = require("./graphql/typeDefs");
 var getUserFromToken_1 = require("./utils/getUserFromToken");
-var MONGODB = "mongodb+srv://majidgabrlo:fuchs333@cluster0.rw6ikjf.mongodb.net/languages?retryWrites=true&w=majority";
+var MONGODB = process.env.MONGODB_URL;
 var server = new apollo_server_1.ApolloServer({
     typeDefs: typeDefs_1.typeDefs,
     resolvers: {
