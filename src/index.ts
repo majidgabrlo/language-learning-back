@@ -1,9 +1,12 @@
 import { ApolloServer } from "apollo-server";
 import mongoose from "mongoose";
+import * as dotenv from 'dotenv'
 import { Query, Mutation } from "./graphql/resolvers";
 import { typeDefs } from "./graphql/typeDefs";
 import { getUserFromToken } from "./utils/getUserFromToken";
 
+
+dotenv.config()
 const MONGODB =process.env.MONGODB_URL
 
 export interface Context {
