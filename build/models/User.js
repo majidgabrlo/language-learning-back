@@ -15,4 +15,4 @@ var userSchema = new mongoose_1.Schema({
     },
     languages: [Language_1.default],
 });
-exports.default = mongoose_1.model("User", userSchema);
+exports.default = (0, mongoose_1.model)("User", userSchema);

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/index.ts --exec ts-node",
-    "tsc": "tsc",
+    "tsc": "tsc --build",
     "start:prod": "node build/index.js"
   },
   "keywords": [],
@@ -22,6 +22,7 @@
     "graphql": "^16.5.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.1",
+    "typescript": "^5.0.4",
     "validator": "^13.7.0"
   },
   "devDependencies": {

@@ -37,8 +37,8 @@ export declare const Query: {
             shortName?: string | undefined;
         }>;
         name?: string | undefined;
-        email?: string | undefined;
         password?: string | undefined;
+        email?: string | undefined;
     }> & {
         createdAt: Date;
         languages: import("mongoose").Types.DocumentArray<{
@@ -51,8 +51,8 @@ export declare const Query: {
             shortName?: string | undefined;
         }>;
         name?: string | undefined;
-        email?: string | undefined;
         password?: string | undefined;
+        email?: string | undefined;
     } & {
         _id: import("mongoose").Types.ObjectId;
     }) | null>;

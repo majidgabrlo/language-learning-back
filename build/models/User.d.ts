@@ -35,8 +35,8 @@ declare const _default: import("mongoose").Model<{
         shortName?: string | undefined;
     }>;
     name?: string | undefined;
-    email?: string | undefined;
     password?: string | undefined;
+    email?: string | undefined;
 }, {}, {}, {}, Schema<any, import("mongoose").Model<any, any, any, any, any>, {}, {}, {}, {}, "type", {
     createdAt: Date;
     languages: import("mongoose").Types.DocumentArray<{
@@ -49,7 +49,7 @@ declare const _default: import("mongoose").Model<{
         shortName?: string | undefined;
     }>;
     name?: string | undefined;
-    email?: string | undefined;
     password?: string | undefined;
+    email?: string | undefined;
 }>>;
 export default _default;
