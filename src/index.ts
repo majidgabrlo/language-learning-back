@@ -4,8 +4,7 @@ import { Query, Mutation } from "./graphql/resolvers";
 import { typeDefs } from "./graphql/typeDefs";
 import { getUserFromToken } from "./utils/getUserFromToken";
 
-const MONGODB =
-  "mongodb+srv://majidgabrlo:fuchs333@cluster0.rw6ikjf.mongodb.net/languages?retryWrites=true&w=majority";
+const MONGODB =process.env.MONGODB_URL
 
 export interface Context {
   userInfo: {
