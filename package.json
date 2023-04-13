@@ -23,5 +23,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.1",
     "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "tsc": "^2.0.4"
   }
 }
