@@ -8,6 +8,7 @@ import { getUserFromToken } from "./utils/getUserFromToken";
 
 dotenv.config()
 const MONGODB =process.env.MONGODB_URL
+const port = process.env.PORT || 8080
 
 export interface Context {
   userInfo: {
@@ -30,8 +31,9 @@ const server = new ApolloServer({
   },
 });
 
-mongoose.connect(MONGODB as string).then(() => {
-  server.listen().then(({ url }) => {
+export const app=mongoose.connect(MONGODB as string).then(() => {
+  server.listen(port).then(({ url }) => {
     console.log("listining to " + url);
   });
 });
+
