@@ -2,10 +2,10 @@
   "name": "learn-language-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/index.ts --exec ts-node",
+    "start": "nodemon --watch './**/*.ts' --exec ts-node src/index.ts",
     "build": "rimraf ./build && tsc",
     "start:prod": "node build/index.js"
   },
@@ -27,8 +27,7 @@
   "devDependencies": {
     "@types/node": "^18.15.11",
     "rimraf": "^5.0.0",
-    "ts-node": "^10.9.1",
-    "tsc": "^2.0.4",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.0.4"
   }
 }
